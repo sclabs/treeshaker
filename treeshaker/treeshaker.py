@@ -161,7 +161,7 @@ def process_module(target_module_name, target_packages, dest_dir,
         print('building sdist for %s' % source_path)
         cmd = 'python setup.py sdist'
         stdout, stderr = subprocess.Popen(
-            shlex.split(cmd), cwd=source_path, shell=True).communicate()
+            shlex.split(cmd), cwd=source_path).communicate()
         print(stdout)
         print(stderr)
         # backslash pathsep breaks pip_comple() in py2
