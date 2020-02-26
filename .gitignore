@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.vscode
+env
+venv
+venv2
+devenv
+build
+build_target
+docs_build
+dist
+sdist
+*.egg-info
+*.egg
+*.eggs
+.tox

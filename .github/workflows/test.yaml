@@ -1,0 +1,32 @@
+name: Test
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 2.7
+      - name: Install Tox
+        run: pip install tox
+      - name: Run Tox
+        run: tox -e lint
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [2.7, 3.6]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install Tox
+        run: pip install tox
+      - name: Run Tox
+        run: tox -e py
