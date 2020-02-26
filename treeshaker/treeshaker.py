@@ -159,12 +159,17 @@ def process_module(target_module_name, target_packages, dest_dir,
     find_links = []
     for source_path in source_paths:
         print('building sdist for %s' % source_path)
-        cmd = 'python setup.py --quiet sdist'
+        cmd = 'python setup.py sdist'
         subprocess.Popen(shlex.split(cmd), cwd=source_path, shell=True)
         # backslash pathsep breaks pip_comple() in py2
         find_link = os.path.join(source_path, 'dist').replace('\\', '/')
-        print(os.listdir('.'))
-        print(os.path.exists('./' + find_link))
+        path_pieces = find_link.split('/')
+        print(path_pieces[0], os.path.exists(path_pieces[0]))
+        print(os.listdir(path_pieces[0]))
+        print('/'.join(path_pieces[:2]),
+              os.path.exists('/'.join(path_pieces[:2])))
+        print(os.listdir('/'.join(path_pieces[:2])))
+        print('./' + find_link, os.path.exists('./' + find_link))
         assert os.path.exists(find_link)
         find_links.append(find_link)
 
