@@ -4,7 +4,7 @@ treeshaker
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/treeshaker.svg)
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/treeshaker.svg)](https://pypi.org/project/treeshaker)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/treeshaker.svg)](https://pypi.org/project/treeshaker)
-![Tests](https://github.com/sclabs/treeshaker/workflows/Tests/badge.svg)
+![Test](https://github.com/sclabs/treeshaker/workflows/Test/badge.svg)
 
 A tree-shaking tool for Python.
 
