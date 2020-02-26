@@ -156,24 +156,29 @@ def process_module(target_module_name, target_packages, dest_dir,
         handle.write('\n')
 
     # handle source_paths
+    find_links = []
     for source_path in source_paths:
         print('building sdist for %s' % source_path)
         cmd = 'python setup.py --quiet sdist'
         subprocess.Popen(shlex.split(cmd), cwd=source_path, shell=True)
+        # backslash pathsep breaks pip_comple() in py2
+        find_link = os.path.join(source_path, 'dist').replace('\\', '/')
+        print(os.listdir('.'))
+        print(os.path.exists('./' + find_link))
+        assert os.path.exists(find_link)
+        find_links.append(find_link)
 
     # compile requirements.txt
     print('writing requirements.txt')
     req_txt_fname = os.path.join(dest_dir, 'requirements.txt')
     pip_compile_args = [req_in_fname, '--output-file', req_txt_fname,
                         '--no-header', '--no-annotate']
-    for source_path in source_paths:
-        pip_compile_args.extend([
-            '--find-links',
-            # backslash pathsep breaks pip_comple() in py2
-            os.path.join(source_path, 'dist').replace('\\', '/')
-        ])
+    for f in find_links:
+        pip_compile_args.extend(['--find-links', f])
     if not verbose:
         pip_compile_args.append('--quiet')
+    print('compiling requirements: %s %s' %
+          ('pip-compile', ' '.join(pip_compile_args)))
     pip_compile(args=pip_compile_args, standalone_mode=False)
     os.remove(req_in_fname)
 
