@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 import os
 import shlex
+import shutil
 import subprocess
 
 import fire
@@ -70,7 +71,7 @@ def resolve_function_name(ref, target_module_name, old_name_to_new_name):
 
 def process_module(target_module_name, target_packages, dest_dir,
                    requirements_file='requirements.txt', add_init_py=False,
-                   source_paths=(), readme=None, functions=(),
+                   package_data=(), source_paths=(), readme=None, functions=(),
                    fire_components=(), post_build_commands=(), verbose=False):
     # parse root requirements.txt
     header_lines, all_reqs = load_requirements_txt(fname=requirements_file)
@@ -147,6 +148,13 @@ def process_module(target_module_name, target_packages, dest_dir,
                 '.' + old_name_to_new_name[other.identifier])
         with open(old_name_to_new_path[m.identifier], 'w') as handle:
             handle.write(data)
+
+    # handle package_data
+    for f in package_data:
+        package_name, f_path = f.split('/', 1)
+        package_path = mg.findNode(package_name).packagepath[0]
+        complete_path = os.path.join(package_path, f_path)
+        shutil.copy(complete_path, dest_dir)
 
     # write requirements.in
     req_in_fname = os.path.join(dest_dir, 'requirements.in')
@@ -243,6 +251,8 @@ def run_from_config(target=None, config='treeshaker.cfg', version=False):
             requirements_file=os.path.join(
                 config_path, section['requirements_file']),
             add_init_py=section['add_init_py'],
+            package_data=section['package_data']
+            if section['package_data'] else (),
             source_paths=[os.path.join(config_path, p)
                           for p in section['source_paths']]
             if section['source_paths'] else (),
