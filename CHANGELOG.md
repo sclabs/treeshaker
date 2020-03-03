@@ -11,6 +11,10 @@ and this project attempts to adhere to [Semantic Versioning](https://semver.org/
    new `package_data` target configuration key to find the file (relative to the
    named package) and copy it to the `<outdir>`.
 
+### Fixed
+ - Post-build commands now run in series (i.e., the second command won't be run
+   until the first completes).
+
 ## 0.0.1 - 2020-02-26
 
 First official release

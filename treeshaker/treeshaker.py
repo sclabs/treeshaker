@@ -220,7 +220,7 @@ def process_module(target_module_name, target_packages, dest_dir,
     # post build commands
     for cmd in post_build_commands:
         print('running post_build_command: %s' % cmd)
-        subprocess.Popen(shlex.split(cmd), cwd=dest_dir, shell=True)
+        subprocess.Popen(shlex.split(cmd), cwd=dest_dir, shell=True).wait()
 
 
 def run_from_config(target=None, config='treeshaker.cfg', version=False):
