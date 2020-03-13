@@ -15,6 +15,7 @@ from treeshaker import __version__
 from treeshaker.config import load_config
 from treeshaker.doc_utils import document_component, document_function
 from treeshaker.pypi_names import convert_from_pypi
+from treeshaker.setup_utils import write_setup_py
 
 
 def load_requirements_txt(fname='requirements.txt'):
@@ -71,8 +72,12 @@ def resolve_function_name(ref, target_module_name, old_name_to_new_name):
 
 def process_module(target_module_name, target_packages, dest_dir,
                    requirements_file='requirements.txt', add_init_py=False,
-                   package_data=(), source_paths=(), readme=None, functions=(),
-                   fire_components=(), post_build_commands=(), verbose=False):
+                   add_setup_py=False, package_data=(), source_paths=(),
+                   readme=None, functions=(), fire_components=(),
+                   post_build_commands=(), verbose=False):
+    # determine package name
+    pkg_name = os.path.split(dest_dir)[1]
+
     # parse root requirements.txt
     header_lines, all_reqs = load_requirements_txt(fname=requirements_file)
     print('parsed %i requirements from requirements.txt' % len(all_reqs))
@@ -127,16 +132,22 @@ def process_module(target_module_name, target_packages, dest_dir,
     old_name_to_new_path = {}
     for old_name, new_name in zip(old_names, new_names):
         old_name_to_new_name[old_name] = new_name
-        old_name_to_new_path[old_name] = os.path.join(
-            dest_dir, new_name + '.py')
+        old_name_to_new_path[old_name] = \
+            os.path.join(dest_dir, pkg_name, new_name + '.py') \
+            if add_setup_py else os.path.join(dest_dir, new_name + '.py')
 
     # make dest_dir
     if not os.path.exists(dest_dir):
         os.mkdir(dest_dir)
+    if add_setup_py and not os.path.exists(os.path.join(dest_dir, pkg_name)):
+        os.mkdir(os.path.join(dest_dir, pkg_name))
 
     # touch __init__.py
     if add_init_py:
-        open(os.path.join(dest_dir, '__init__.py'), 'w').close()
+        if add_setup_py:
+            open(os.path.join(dest_dir, pkg_name, '__init__.py'), 'w').close()
+        else:
+            open(os.path.join(dest_dir, '__init__.py'), 'w').close()
 
     # copy modules, rewriting imports
     for m in our_mods:
@@ -215,7 +226,13 @@ def process_module(target_module_name, target_packages, dest_dir,
                 handle.write('----------\n\n')
             for f in functions:
                 document_function(handle, *resolve_function_name(
-                    f, target_module_name, old_name_to_new_name))
+                    f, target_module_name, old_name_to_new_name),
+                    pkg_name=pkg_name if add_setup_py else None)
+
+    # write setup.py
+    if add_setup_py:
+        print('writing setup.py')
+        write_setup_py(dest_dir, pkg_name, external_reqs)
 
     # post build commands
     for cmd in post_build_commands:
@@ -251,6 +268,7 @@ def run_from_config(target=None, config='treeshaker.cfg', version=False):
             requirements_file=os.path.join(
                 config_path, section['requirements_file']),
             add_init_py=section['add_init_py'],
+            add_setup_py=section['add_setup_py'],
             package_data=section['package_data']
             if section['package_data'] else (),
             source_paths=[os.path.join(config_path, p)

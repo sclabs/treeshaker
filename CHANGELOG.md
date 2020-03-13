@@ -10,6 +10,9 @@ and this project attempts to adhere to [Semantic Versioning](https://semver.org/
  - New feature: list files in the format `package.name/relative/path.ext` in a
    new `package_data` target configuration key to find the file (relative to the
    named package) and copy it to the `<outdir>`.
+ - New feature: include `installable=True` in any `[target:XXX]` section to
+   produce a pip-installable Python package complete with an auto-generated
+   `setup.py`.
 
 ### Fixed
  - Post-build commands now run in series (i.e., the second command won't be run

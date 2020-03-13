@@ -10,13 +10,16 @@ import fire
 ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
 
-def document_function(handle, module_name, function_name, new_name):
+def document_function(handle, module_name, function_name, new_name,
+                      pkg_name=None):
     module = import_module(module_name)
     function = getattr(module, function_name)
-    handle.write('### %s.%s()\n\n' % (new_name, function_name))
+    handle.write('### %s%s.%s()\n\n' %
+        ('%s.' % pkg_name if pkg_name else '', new_name, function_name))
     handle.write('```\n')
-    handle.write('import %s\n' % new_name)
-    handle.write('help(%s.%s)\n' % (new_name, function_name))
+    handle.write('from %s%s import %s\n' %
+        ('%s.' % pkg_name, new_name, function_name))
+    handle.write('help(%s)\n' % function_name)
     handle.write(pydoc.plain(pydoc.TextDoc().docroutine(function)))
     handle.write('```\n')
 
