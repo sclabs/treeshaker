@@ -1,0 +1,5 @@
+prune .github
+prune examples
+prune images
+exclude .gitignore
+exclude tox.ini
