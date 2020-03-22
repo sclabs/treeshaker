@@ -27,7 +27,7 @@ setup(
 
 
 def format_requirements(reqs):
-    return '\n'.join('        \'%s\'' % r.line.replace('==', '>=')
+    return ',\n'.join('        \'%s\'' % r.line.replace('==', '>=')
                      for r in reqs)
 
 

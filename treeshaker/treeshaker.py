@@ -145,9 +145,13 @@ def process_module(target_module_name, target_packages, dest_dir,
     # touch __init__.py
     if add_init_py:
         if add_setup_py:
-            open(os.path.join(dest_dir, pkg_name, '__init__.py'), 'w').close()
+            print('both add_init_py and add_setup_py are set to True')
+            print('__init__.py will be written, but only once '
+                  '(inside the package folder)')
         else:
             open(os.path.join(dest_dir, '__init__.py'), 'w').close()
+    if add_setup_py:
+        open(os.path.join(dest_dir, pkg_name, '__init__.py'), 'w').close()
 
     # copy modules, rewriting imports
     for m in our_mods:
