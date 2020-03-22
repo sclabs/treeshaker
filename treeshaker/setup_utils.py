@@ -28,7 +28,7 @@ setup(
 
 def format_requirements(reqs):
     return ',\n'.join('        \'%s\'' % r.line.replace('==', '>=')
-                     for r in reqs)
+                      for r in reqs)
 
 
 def write_setup_py(dest_dir, name, reqs):
