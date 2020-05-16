@@ -86,7 +86,7 @@ def process_module(target_module_name, target_packages, dest_dir,
     print('constructing module import graph')
     mg = find_modules(
         includes=(target_module_name,),
-        excludes=set(r.name for r in all_reqs)-set(target_packages)
+        excludes=set(r.name for r in all_reqs) - set(target_packages)
     )
     print('found %i nodes in the module import graph' % len(list(mg.flatten())))
 
@@ -175,8 +175,8 @@ def process_module(target_module_name, target_packages, dest_dir,
     # write requirements.in
     req_in_fname = os.path.join(dest_dir, 'requirements.in')
     with open(req_in_fname, 'w') as handle:
-        handle.write('\n'.join(header_lines +
-                               list(sorted([e.line for e in external_reqs]))))
+        handle.write('\n'.join(
+            header_lines + list(sorted([e.line for e in external_reqs]))))
         handle.write('\n')
 
     # handle source_paths
