@@ -2,6 +2,7 @@ treeshaker
 ==========
 
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/treeshaker.svg)
+![PyPI - License](https://img.shields.io/pypi/l/treeshaker)
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/treeshaker.svg)](https://pypi.org/project/treeshaker)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/treeshaker.svg)](https://pypi.org/project/treeshaker)
 ![Test](https://github.com/sclabs/treeshaker/workflows/Test/badge.svg)

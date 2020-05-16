@@ -30,7 +30,8 @@ setup(
         'Topic :: Software Development',
         'Topic :: Software Development :: Build Tools',
         'Topic :: System :: Archiving :: Packaging',
-        'Topic :: System :: Software Distribution'
+        'Topic :: System :: Software Distribution',
+        'License :: OSI Approved :: MIT License'
     ],
     keywords='tree-shaking',
     packages=find_packages(),
