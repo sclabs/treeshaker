@@ -31,5 +31,6 @@ and this project attempts to adhere to [Semantic Versioning](https://semver.org/
 First official release.
 
 ## Diffs
+- [0.0.3](https://github.com/sclabs/treeshaker/compare/v0.0.2...v0.0.3)
 - [0.0.2](https://github.com/sclabs/treeshaker/compare/v0.0.1...v0.0.2)
 - [0.0.1](https://github.com/sclabs/treeshaker/tree/v0.0.1)
