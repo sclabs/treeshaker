@@ -157,7 +157,8 @@ def process_module(target_module_name, target_packages, dest_dir,
     for m in our_mods:
         with open(m.filename, 'r') as handle:
             data = handle.read()
-        for other in our_mods:
+        for other in sorted(our_mods, key=lambda x: len(x.identifier),
+                            reverse=True):
             data = data.replace(
                 other.identifier,
                 '.' + old_name_to_new_name[other.identifier])
